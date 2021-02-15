@@ -1,0 +1,12 @@
+[flake8]
+exclude =
+    env/*,
+    venv/*,
+    */migrations/*,
+    */settings.py,
+    */tests/*,
+    about/*,
+    posts/*,
+    users/*,
+    templates/*,
+    tests/fixtures/*
