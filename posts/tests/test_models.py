@@ -11,7 +11,7 @@ class PostModelTest(TestCase):
         super().setUpClass()
         # Создаём тестовую запись в БД
         cls.author = User.objects.create(
-            usernam='somethingUser'
+            username='somethingUser'
         )
         cls.group = Group.objects.create(
             title='f' * 15,

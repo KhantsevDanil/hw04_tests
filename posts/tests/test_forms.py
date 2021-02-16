@@ -2,41 +2,56 @@ from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
 from posts.models import Group, Post
-
 User = get_user_model()
-
-
-class PostFormTests(TestCase):
+class PostCreateFormTests(TestCase):
+    group = None
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.user = User.objects.create(username="test-name")
+        cls.user = User.objects.create(username='Alex_Morgan')
         cls.group = Group.objects.create(
-            title="Тестовая группа",
-            description="Группа для тестирования",
+            title='Тестовая группа',
+            description='Описание тестовой группы',
         )
-
+        cls.post = Post.objects.create(
+            text='Тестовый пост',
+            author=cls.user,
+            group=cls.group
+        )
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
-
     def test_create_post(self):
         """Валидная форма создает запись в Post."""
-        # Подсчитаем количество записей в Post
         posts_count = Post.objects.count()
         form_data = {
-            "text:": "Тестовый текст поста",
-            "author": self.user,
-            "group": PostFormTests.group.id,
+            'group': PostCreateFormTests.group.id,
+            'text': 'Тестовый пост',
         }
-        # Отправляем POST-запрос
         response = self.authorized_client.post(
-            reverse("new_post"),
+            reverse('posts:new_post'),
             data=form_data,
-            follow=True,
+            follow=True
         )
-        self.assertRedirects(response, "/")
+        self.assertRedirects(response, reverse('posts:index'))
         self.assertEqual(Post.objects.count(), posts_count + 1)
-        self.assertTrue(
-            Post.objects.filter(group=PostFormTests.group.id).exists()
+    def test_edit_post(self):
+        """При редактировании поста, изменяется запись в базе данных."""
+        posts_count = Post.objects.count()
+        form_data = {
+            'text': 'Измененный пост',
+            'group': self.group.id,
+        }
+        test_post = Post.objects.create(
+            text='Тестовый пост',
+            author=self.user,
         )
+        kwargs = {'username': self.user.username, 'post_id': test_post.id}
+        # response = self.authorized_client.post(
+        #     reverse('posts:post_edit', kwargs=kwargs),
+        #     data=form_data,
+        #     follow=True
+        # )
+        self.assertEqual(Post.objects.count(), posts_count + 1)
+        # print(reverse('posts:post_view', kwargs=kwargs))
+        # self.assertRedirects(response, reverse('posts:post_view', kwargs=kwargs))

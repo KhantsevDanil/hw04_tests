@@ -15,7 +15,7 @@ def index(request):
     return render(
         request,
         'posts/index.html',
-        {'page': page, "paginator": paginator},
+        {'page': page, "paginator": paginator, "post_list": post_list},
     )
 
 
