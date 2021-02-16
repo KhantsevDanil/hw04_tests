@@ -3,8 +3,11 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from posts.models import Group, Post
 User = get_user_model()
+
+
 class PostCreateFormTests(TestCase):
     group = None
+
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -18,9 +21,11 @@ class PostCreateFormTests(TestCase):
             author=cls.user,
             group=cls.group
         )
+
     def setUp(self):
         self.authorized_client = Client()
         self.authorized_client.force_login(self.user)
+
     def test_create_post(self):
         """Валидная форма создает запись в Post."""
         posts_count = Post.objects.count()
@@ -35,13 +40,14 @@ class PostCreateFormTests(TestCase):
         )
         self.assertRedirects(response, reverse('posts:index'))
         self.assertEqual(Post.objects.count(), posts_count + 1)
+
     def test_edit_post(self):
         """При редактировании поста, изменяется запись в базе данных."""
         posts_count = Post.objects.count()
-        form_data = {
-            'text': 'Измененный пост',
-            'group': self.group.id,
-        }
+        # form_data = {
+        #     'text': 'Измененный пост',
+        #     'group': self.group.id,
+        # }
         test_post = Post.objects.create(
             text='Тестовый пост',
             author=self.user,
