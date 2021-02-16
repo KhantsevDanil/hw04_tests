@@ -48,10 +48,10 @@ class PostCreateFormTests(TestCase):
         #     'text': 'Измененный пост',
         #     'group': self.group.id,
         # }
-        test_post = Post.objects.create(
-            text='Тестовый пост',
-            author=self.user,
-        )
+        # test_post = Post.objects.create(
+        #     text='Тестовый пост',
+        #     author=self.user,
+        # )
         # kwargs = {'username': self.user.username, 'post_id': test_post.id}
         # response = self.authorized_client.post(
         #     reverse('posts:post_edit', kwargs=kwargs),
