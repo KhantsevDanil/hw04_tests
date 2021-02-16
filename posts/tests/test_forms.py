@@ -52,7 +52,7 @@ class PostCreateFormTests(TestCase):
             text='Тестовый пост',
             author=self.user,
         )
-        kwargs = {'username': self.user.username, 'post_id': test_post.id}
+        # kwargs = {'username': self.user.username, 'post_id': test_post.id}
         # response = self.authorized_client.post(
         #     reverse('posts:post_edit', kwargs=kwargs),
         #     data=form_data,
