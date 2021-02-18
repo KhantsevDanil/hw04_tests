@@ -59,5 +59,4 @@ class PostCreateFormTests(TestCase):
             follow=True
         )
         self.assertEqual(Post.objects.count(), posts_count + 1)
-        print(reverse('posts:post_view', kwargs=kwargs))
         self.assertRedirects(response, reverse('posts:post_view', kwargs=kwargs))

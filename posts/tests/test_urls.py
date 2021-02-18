@@ -9,7 +9,7 @@ class GroupURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        Group.objects.create(
+        cls.group = Group.objects.create(
             title='Тестовый заголовок',
             slug='cats',
             description='Текст описания'
@@ -24,7 +24,7 @@ class GroupURLTests(TestCase):
     def test_urls_uses_correct_template(self):
         templates_url_names = {
             'posts/index.html': '/',
-            'group.html': '/group/cats/',
+            'group.html': f'/group/{self.group.slug}/',
             'posts/new_post.html': '/new/',
         }
         for template, urls in templates_url_names.items():
@@ -35,7 +35,7 @@ class GroupURLTests(TestCase):
     def test_correct_status_code_for_guest_client(self):
         url_status_code = {
             '/': 200,
-            '/group/cats/': 200,
+            f'/group/{self.group.slug}/': 200,
             '/new/': 302
         }
         for reverse_name, status_code in url_status_code.items():
@@ -46,7 +46,7 @@ class GroupURLTests(TestCase):
     def test_correct_status_code_for_authorized_client(self):
         url_status_code = {
             '/': 200,
-            '/group/cats/': 200,
+            f'/group/{self.group.slug}/': 200,
             '/new/': 302
         }
         for reverse_name, status_code in url_status_code.items():
