@@ -44,20 +44,20 @@ class PostCreateFormTests(TestCase):
     def test_edit_post(self):
         """При редактировании поста, изменяется запись в базе данных."""
         posts_count = Post.objects.count()
-        # form_data = {
-        #     'text': 'Измененный пост',
-        #     'group': self.group.id,
-        # }
-        Post.objects.create(
+        form_data = {
+            'text': 'Измененный пост',
+            'group': self.group.id,
+        }
+        test_post = Post.objects.create(
             text='Тестовый пост',
             author=self.user,
         )
-        # kwargs = {'username': self.user.username, 'post_id': test_post.id}
-        # response = self.authorized_client.post(
-        #     reverse('posts:post_edit', kwargs=kwargs),
-        #     data=form_data,
-        #     follow=True
-        # )
+        kwargs = {'username': self.user.username, 'post_id': test_post.id}
+        response = self.authorized_client.post(
+            reverse('posts:post_edit', kwargs=kwargs),
+            data=form_data,
+            follow=True
+        )
         self.assertEqual(Post.objects.count(), posts_count + 1)
-        # print(reverse('posts:post_view', kwargs=kwargs))
-        # self.assertRedirects(response, reverse('posts:post_view', kwargs=kwargs))
+        print(reverse('posts:post_view', kwargs=kwargs))
+        self.assertRedirects(response, reverse('posts:post_view', kwargs=kwargs))

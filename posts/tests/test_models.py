@@ -72,13 +72,3 @@ class PostModelTest(TestCase):
             with self.subTest(value=value):
                 self.assertEqual(
                     self.post._meta.get_field(value).help_text, expected)
-
-    def test_text_convert_to_slug(self):
-        """save преобразует в slug содержимое поля title."""
-        slug = self.group.slug
-        self.assertEquals(slug, 'some_slug')
-
-    def test_text_post_text(self):
-        """save преобразует в slug содержимое поля title."""
-        text = self.post.text
-        self.assertEquals(text, 'Самый лучший текст')
