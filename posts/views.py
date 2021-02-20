@@ -61,16 +61,12 @@ def profile(request, username):
 
 
 def post_view(request, username, post_id):
+    post = get_object_or_404(Post, id=post_id, author__username=username)
     author = get_object_or_404(User, username=username)
-    post = get_object_or_404(Post, author=author, id=post_id)
     return render(request,
                   'posts/post.html',
-                  {
-                      'author': author,
-                      'post': post,
-                  }
+                  {'post': post, 'author': author}
                   )
-
 
 @login_required
 def post_edit(request, username, post_id):
