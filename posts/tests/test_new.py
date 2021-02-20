@@ -32,8 +32,8 @@ class TestNewView:
             'Проверьте, что в форме `form` на странице `/new/`'
             ' есть поле `group`')
         assert type(
-            response.context['form'].fields['group']) == \
-                forms.models.ModelChoiceField, (
+            response.context['form'].fields['group']
+            ) == forms.models.ModelChoiceField, (
             'Проверьте, что в форме `form` на странице `/new/` поле'
             ' `group` типа `ModelChoiceField`')
         assert not response.context['form'].fields['group'].required, (
