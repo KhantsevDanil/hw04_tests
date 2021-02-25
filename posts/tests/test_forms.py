@@ -41,7 +41,7 @@ class PostCreateFormTests(TestCase):
         )
         self.assertRedirects(response, reverse('posts:index'))
         self.assertEqual(Post.objects.count(), posts_count + 1)
-        test_group=Post.objects.get(id=posts_count)
+        test_group = Post.objects.get(id=posts_count)
         self.assertEqual(test_group.text, 'Тестовый пост')
 
     def test_edit_post(self):
