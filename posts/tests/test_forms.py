@@ -1,7 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.test import Client, TestCase
 from django.urls import reverse
+
 from posts.models import Group, Post
+
 User = get_user_model()
 
 
@@ -27,7 +29,6 @@ class PostCreateFormTests(TestCase):
         self.authorized_client.force_login(self.user)
 
     def test_create_post(self):
-        """Валидная форма создает запись в Post."""
         posts_count = Post.objects.count()
         form_data = {
             'group': PostCreateFormTests.group.id,
@@ -40,9 +41,10 @@ class PostCreateFormTests(TestCase):
         )
         self.assertRedirects(response, reverse('posts:index'))
         self.assertEqual(Post.objects.count(), posts_count + 1)
+        test_group=Post.objects.get(id=posts_count)
+        self.assertEqual(test_group.text, 'Тестовый пост')
 
     def test_edit_post(self):
-        """При редактировании поста, изменяется запись в базе данных."""
         posts_count = Post.objects.count()
         form_data = {
             'text': 'Измененный пост',

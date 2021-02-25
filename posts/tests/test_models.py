@@ -1,6 +1,7 @@
-from django.test import TestCase
-from posts.models import Group, Post
 from django.contrib.auth import get_user_model
+from django.test import TestCase
+
+from posts.models import Group, Post
 
 User = get_user_model()
 
@@ -9,7 +10,6 @@ class PostModelTest(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # Создаём тестовую запись в БД
         cls.author = User.objects.create(
             username='somethingUser'
         )
@@ -26,7 +26,6 @@ class PostModelTest(TestCase):
         )
 
     def test_post_verbose_name(self):
-        """verbose_name в полях совпадает с ожидаемым."""
         field_verbose = {
             'text': 'Текст',
             'pub_date': 'Дата',
@@ -37,7 +36,6 @@ class PostModelTest(TestCase):
                     self.post._meta.get_field(value).verbose_name, expected)
 
     def test_group_verbose_name(self):
-        """verbose_name в полях совпадает с ожидаемым."""
         field_verbose = {
             'title': 'Заголовок',
             'description': 'Описание',
@@ -49,7 +47,6 @@ class PostModelTest(TestCase):
                     self.group._meta.get_field(value).verbose_name, expected)
 
     def test_group_help_text(self):
-        """help_text в полях совпадает с ожидаемым."""
         field_verbose = {
             'title': 'Назовите как-то кгруппу',
             'description': 'расскажите, что происходит в вашей группе )',
@@ -61,7 +58,6 @@ class PostModelTest(TestCase):
                     self.group._meta.get_field(value).help_text, expected)
 
     def test_post_help_text(self):
-        """verbose_name в полях совпадает с ожидаемым."""
         field_verbose = {
             'text': 'основное содержание поста',
             'pub_date': 'Дата создания Поста',

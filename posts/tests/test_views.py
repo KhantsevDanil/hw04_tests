@@ -1,7 +1,8 @@
-from django.test import TestCase, Client
-from django.contrib.auth import get_user_model
-from django.urls import reverse
 from django import forms
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+from django.urls import reverse
+
 from posts.models import Group, Post, User
 
 
@@ -27,7 +28,6 @@ class TaskPagesTests(TestCase):
         )
 
     def setUp(self):
-        # Создаем авторизованный клиент
         User = get_user_model()
         self.user = User.objects.create_user(username='Alex Morgan')
         self.authorized_client = Client()
@@ -49,16 +49,6 @@ class TaskPagesTests(TestCase):
         self.assertEqual(response.context.get('post_list')[0],
                          self.post,
                          'Сообщение об ошибке')
-        # post_text_0 = response.context.get('posts')[0].text
-        # post_author_0 = response.context.get('posts')[0].author
-        # post_group_0 = response.context.get('posts')[0].group
-        # self.assertEqual(response.context.get('posts')[0], self.post)
-        # print(response.context.get('posts')[0].text)
-        # print(response.context.get('posts')[0].author)
-        # print(response.context.get('posts')[0].group)
-        # self.assertEqual(post_text_0, 'Тестовый пост', post_text_0)
-        # self.assertEqual(post_author_0.username, 'Alex Morgan', post_author_0)
-        # self.assertEqual(post_group_0.title, 'Когорка 7', post_group_0)
 
     def test_group_page_show_correct_context(self):
         response = self.authorized_client.get(reverse(
@@ -68,10 +58,7 @@ class TaskPagesTests(TestCase):
                          'Сообщение об ошибке')
 
     def test_new_show_correct_context(self):
-        """Шаблон home сформирован с правильным контекстом."""
         response = self.authorized_client.get(reverse('posts:new_post'))
-        # Список ожидаемых типов полей формы:
-        # указываем, объектами какого класса должны быть поля формы
         form_fields_new = {
             'text': forms.fields.CharField,
             'group': forms.models.ModelChoiceField,
@@ -79,18 +66,16 @@ class TaskPagesTests(TestCase):
         for value, expected in form_fields_new.items():
             with self.subTest(value=value):
                 form_field = response.context.get('form').fields.get(value)
-                # Проверяет, что поле формы является экземпляром
-                # указанного класса
                 self.assertIsInstance(form_field, expected)
 
     def test_user_get_post(self):
         response = self.authorized_client.get(reverse('index'))
-        self.assertEqual(response.context.get('posts')[0], self.post_1)
+        self.assertEqual(response.context.get('posts')[0], self.post)
 
     def test_user_get_post(self):
         response = self.authorized_client.get(
             reverse('group', kwargs={'slug': 'Full_stack'}))
-        self.assertEqual(response.context.get('posts')[0], self.post_1)
+        self.assertEqual(response.context.get('posts')[0], self.post)
 
     def test_user_get_post(self):
         response = self.authorized_client.get(

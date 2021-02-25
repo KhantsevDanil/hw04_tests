@@ -10,12 +10,12 @@ class TestNewView:
     @pytest.mark.django_db(transaction=True)
     def test_new_view_get(self, user_client):
         try:
-            response = user_client.get(reverse('/new'))
+            response = user_client.get(reverse('posts:new_post'))
         except Exception as e:
             assert False, f'''Страница `/new`
 работает неправильно. Ошибка: `{e}`'''
         if response.status_code in (301, 302):
-            response = user_client.get('new_post')
+            response = user_client.get(reverse('posts:new_post'))
         assert response.status_code != 404, ('Страница'
                                              '`/new/` не найдена,'
                                              'проверьте этот адрес в'
@@ -54,7 +54,7 @@ class TestNewView:
     def test_new_view_post(self, user_client, user, group):
         text = 'Проверка нового поста!'
         try:
-            response = user_client.get('/new')
+            response = user_client.get(reverse('posts:new_post'))
         except Exception as e:
             assert False, f'''Страница `/new`
 работает неправильно. Ошибка: `{e}`'''

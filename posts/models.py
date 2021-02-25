@@ -23,10 +23,10 @@ class Group(models.Model):
 
 class Post(models.Model):
     text = models.TextField(verbose_name="Текст",
-                            help_text='основное содержание поста')
-    pub_date = models.DateTimeField('Дата',
+                            help_text="основное содержание поста")
+    pub_date = models.DateTimeField("Дата",
                                     auto_now_add=True,
-                                    help_text='Дата создания Поста')
+                                    help_text="Дата создания Поста")
     author = models.ForeignKey(User,
                                on_delete=models.CASCADE,
                                related_name="posts",
