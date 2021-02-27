@@ -41,8 +41,8 @@ class PostCreateFormTests(TestCase):
         )
         self.assertRedirects(response, reverse('posts:index'))
         self.assertEqual(Post.objects.count(), posts_count + 1)
-        test_group = Post.objects.get(id=posts_count)
-        self.assertEqual(test_group.text, 'Тестовый пост')
+        test_group = Post.objects.last()
+        self.assertEqual(test_group.text, form_data['text'])
 
     def test_edit_post(self):
         posts_count = Post.objects.count()
@@ -62,3 +62,5 @@ class PostCreateFormTests(TestCase):
         )
         self.assertEqual(Post.objects.count(), posts_count + 1)
         self.assertRedirects(response, reverse('posts:post_view', kwargs=kwargs))
+        test_group = Post.objects.last()
+        self.assertEqual(test_group.text, form_data['text'])

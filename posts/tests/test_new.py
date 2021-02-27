@@ -12,8 +12,8 @@ class TestNewView:
         try:
             response = user_client.get(reverse('posts:new_post'))
         except Exception as e:
-            assert False, f'''Страница `/new`
-работает неправильно. Ошибка: `{e}`'''
+            assert False, ('Страница `/new`'
+                           f'работает неправильно. Ошибка: `{e}`')
         if response.status_code in (301, 302):
             response = user_client.get(reverse('posts:new_post'))
         assert response.status_code != 404, ('Страница'
@@ -56,9 +56,9 @@ class TestNewView:
         try:
             response = user_client.get(reverse('posts:new_post'))
         except Exception as e:
-            assert False, f'''Страница `/new`
-работает неправильно. Ошибка: `{e}`'''
-        url = '/new/' if response.status_code in (301, 302) else '/new'
+            assert False, ('Страница `/new`'
+                           f'работает неправильно. Ошибка: `{e}`')
+        url = reverse('new_post') if response.status_code in (301, 302) else '/new'
 
         response = user_client.post(url, data={'text': text,
                                                'group': group.id})

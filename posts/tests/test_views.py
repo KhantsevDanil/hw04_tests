@@ -37,7 +37,7 @@ class TaskPagesTests(TestCase):
         templates_pages_names = {
             'posts/index.html': reverse('posts:index'),
             'posts/new_post.html': reverse('posts:new_post'),
-            'group.html': reverse('posts:group', kwargs={'slug': 'Full_stack'}),
+            'group.html': reverse('posts:group', kwargs={'slug': self.group_1.slug}),
         }
         for template, reverse_name in templates_pages_names.items():
             with self.subTest(reverse_name=reverse_name):
@@ -74,7 +74,7 @@ class TaskPagesTests(TestCase):
 
     def test_user_get_post(self):
         response = self.authorized_client.get(
-            reverse('group', kwargs={'slug': 'Full_stack'}))
+            reverse('group', kwargs={'slug': self.group_1.slug}))
         self.assertEqual(response.context.get('posts')[0], self.post)
 
     def test_user_get_post(self):

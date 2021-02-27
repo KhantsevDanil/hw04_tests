@@ -16,7 +16,7 @@ def index(request):
     return render(
         request,
         'posts/index.html',
-        {'page': page, "paginator": paginator, "post_list": post_list},
+        {'page': page, 'paginator': paginator, 'post_list': post_list},
     )
 
 
@@ -29,8 +29,8 @@ def group_posts(request, slug):
     page = paginator.get_page(page_number)
     return render(
         request,
-        "group.html",
-        {'page': page, 'group': group, "paginator": paginator}
+        'group.html',
+        {'page': page, 'group': group, 'paginator': paginator}
     )
 
 
@@ -62,25 +62,23 @@ def profile(request, username):
 
 def post_view(request, username, post_id):
     post = get_object_or_404(Post, id=post_id, author__username=username)
-    author = get_object_or_404(User, username=username)
     return render(request,
                   'posts/post.html',
-                  {'post': post, 'author': author}
+                  {'post': post, 'author': post.author}
                   )
 
 
 @login_required
 def post_edit(request, username, post_id):
-    author = get_object_or_404(User, username=username)
-    item = get_object_or_404(Post, author=author, id=post_id)
-    if request.user != author:
+    item = get_object_or_404(Post, author__username=username, id=post_id)
+    if request.user != item.author:
         redirect(reverse(
-            "posts:post_view", args=[author.username, post_id]))
+            'posts:post_view', args=[username, post_id]))
     form = PostForm(request.POST or None, instance=item)
     if form.is_valid():
         form.save()
         return redirect(reverse(
-            "posts:post_view", args=[author.username, post_id]))
+            'posts:post_view', args=[username, post_id]))
     return render(request,
                   'posts/new_post.html',
-                  {"form": form, "item": item})
+                  {'form': form, 'item': item})
